@@ -14,18 +14,23 @@ impl FrameBuffer {
       }
   }
 
-  pub fn ppm_get(&self, x: u32, y: u32) -> Color {
-    let idx: usize = (y * self.h * 3 + x * 3) as usize;
-    let r = self.buf[idx] as u32;
-    let g = self.buf[idx+1] as u32;
-    let b = self.buf[idx+2] as u32;
+  pub fn ppm_get_i(&self, i: usize) -> Color {
+    let r = self.buf[i*3] as u32;
+    let g = self.buf[i*3+1] as u32;
+    let b = self.buf[i*3+2] as u32;
     (r << 16) | (g << 8) | b
   }
+  pub fn ppm_get(&self, x: u32, y: u32) -> Color {
+    self.ppm_get_i((y * self.h + x) as usize)
+  }
+
+  pub fn ppm_set_i(&mut self, i: usize, c:Color) { 
+      self.buf[i*3]   = (c >> 16) as u8;
+      self.buf[i*3+1] = (c >> 8) as u8;
+      self.buf[i*3+2] = (c >> 0) as u8;
+  }
   pub fn ppm_set(&mut self, x: u32, y: u32, c: Color) { 
-      let idx: usize = (y * self.h * 3 + x * 3) as usize;
-      self.buf[idx]   = (c >> 16) as u8;
-      self.buf[idx+1] = (c >> 8) as u8;
-      self.buf[idx+2] = (c >> 0) as u8;
+      self.ppm_set_i((y * self.h + x) as usize, c);
   }
   pub fn ppm_write<P: Write> (&self, b: &mut P) {
       writeln!(b, "P6\n{} {}\n255", self.w, self.h).unwrap();
