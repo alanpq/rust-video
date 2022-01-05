@@ -14,22 +14,26 @@ pub trait WritePPM {
 
 impl PPM for FrameBuffer {
   fn ppm_get_i(&self, i: usize) -> Color {
+    if i*3+2 > self.buf.len() { return 0; }
     let r = self.buf[i*3] as u32;
     let g = self.buf[i*3+1] as u32;
     let b = self.buf[i*3+2] as u32;
     (r << 16) | (g << 8) | b
   }
   fn ppm_get(&self, x: u32, y: u32) -> Color {
+    if x >= self.w || y >= self.h { return 0; }
     self.ppm_get_i((y * self.h + x) as usize)
   }
 
   fn ppm_set_i(&mut self, i: usize, c:Color) { 
-      self.buf[i*3]   = (c >> 16) as u8;
-      self.buf[i*3+1] = (c >> 8) as u8;
-      self.buf[i*3+2] = (c >> 0) as u8;
+    if i*3+2 > self.buf.len() { return; }
+    self.buf[i*3]   = (c >> 16) as u8;
+    self.buf[i*3+1] = (c >> 8) as u8;
+    self.buf[i*3+2] = (c >> 0) as u8;
   }
   fn ppm_set(&mut self, x: u32, y: u32, c: Color) { 
-      self.ppm_set_i((y * self.h + x) as usize, c);
+    if x >= self.w || y >= self.h { return; }
+    self.ppm_set_i((y * self.h + x) as usize, c);
   }
 }
 
