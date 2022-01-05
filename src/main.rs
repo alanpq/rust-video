@@ -4,7 +4,7 @@ mod framebuffer;
 use std::io::stdout;
 
 use color::{Color, RGB};
-use framebuffer::{FrameBuffer, PPM};
+use framebuffer::{FrameBuffer};
 use rand::prelude::*;
 
 fn main() {
