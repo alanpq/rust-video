@@ -22,7 +22,7 @@ impl PPM for FrameBuffer {
   }
   fn ppm_get(&self, x: u32, y: u32) -> Color {
     if x >= self.w || y >= self.h { return 0; }
-    self.ppm_get_i((y * self.h + x) as usize)
+    self.ppm_get_i((y * self.w + x) as usize)
   }
 
   fn ppm_set_i(&mut self, i: usize, c:Color) { 
@@ -33,7 +33,7 @@ impl PPM for FrameBuffer {
   }
   fn ppm_set(&mut self, x: u32, y: u32, c: Color) { 
     if x >= self.w || y >= self.h { return; }
-    self.ppm_set_i((y * self.h + x) as usize, c);
+    self.ppm_set_i((y * self.w + x) as usize, c);
   }
 }
 
