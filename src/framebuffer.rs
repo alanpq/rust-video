@@ -1,4 +1,4 @@
-use crate::{color::Color, render::Renderable};
+use crate::{color::{Color, RGB}, render::Renderable};
 use std::io::Write;
 
 pub trait PPM {
@@ -6,6 +6,7 @@ pub trait PPM {
   fn ppm_get(&self, x: u32, y: u32) -> Color;
   fn ppm_set_i(&mut self, i: usize, c:Color);
   fn ppm_set(&mut self, x: u32, y: u32, c: Color);
+  fn ppm_set_alpha(&mut self, x: u32, y: u32, c: Color, a: f32);
 }
 
 pub trait WritePPM {
@@ -34,6 +35,11 @@ impl PPM for FrameBuffer {
   fn ppm_set(&mut self, x: u32, y: u32, c: Color) { 
     if x >= self.w || y >= self.h { return; }
     self.ppm_set_i((y * self.w + x) as usize, c);
+  }
+
+  fn ppm_set_alpha(&mut self, x: u32, y: u32, c: Color, a: f32) {
+    let bg = self.ppm_get(x, y);
+    self.ppm_set(x, y, Color::lerp_rgb(bg, c, a));
   }
 }
 
