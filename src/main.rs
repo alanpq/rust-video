@@ -21,6 +21,6 @@ fn main() {
         (&mut frame as &mut dyn PPM).dot(25.0 + (time/50.0).sin() * 25.0, 25.0 + (time/50.0).cos() * 25.0, 0, 1.0, Some(0.1));
         frame.ppm_write(&mut out);
         time += 1.0;
-        coz::progress!();
+        coz::progress!("main loop");
     }    
 }
