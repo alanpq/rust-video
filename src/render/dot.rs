@@ -4,7 +4,7 @@ use crate::Renderable;
 
 fn smoothstep(e0: f32, e1: f32, x: f32) -> f32{
   let x = ((x - e0) / (e1 - e0)).clamp(0.0, 1.0);
-  x * x * (3.0 - 2.0 * x)
+  x.powf(2.0) * (3.0 - 2.0 * x)
 }
 
 pub fn dot(buf: &mut (impl PPM + ?Sized), x: f32, y: f32, color: Color, radius: f32, blur: Option<f32>) {
